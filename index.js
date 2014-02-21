@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-if (process.argv.length < 4) {
-  console.log('Usage: fuck you [process]')
+if (process.argv.length <3) {
+  console.log('Usage: fuck [you] process')
   process.exit(1)
 }
 
@@ -11,12 +11,16 @@ var toArray  = [].slice.call.bind([].slice)
 
 var chars   = " -_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 var flipped = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz∀𐐒ƆᗡƎℲ⅁HIſ⋊⅂WNOԀΌᴚS⊥∩ΛMX⅄Z⇂ᄅƐㄣގ9ㄥ860"
-var pname   = process.argv[3]
+var pname   = process.argv[process.argv.length-1]
 
+if (pname === 'you') {
+  console.log('I would if I could')
+  process.exit(1)
+}
 
 exec('killall -9 ' + sanitise(pname), function(error, stdout, stderr) {
   if (error == null)  show('(╯°□°）╯︵', flip(pname))
-  else                show('(；￣Д￣) . o O( It’s not very effective... )') })
+  else                show('(；￣Д￣) . o O( It’s not very effective... )') }); 
 
 
 function show() {
