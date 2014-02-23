@@ -7,8 +7,8 @@ var sequence = require('control.monads').sequence
 var sanitise = JSON.stringify
 var toArray  = [].slice.call.bind([].slice)
 
-var chars       = " -_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-var flipped     = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz∀𐐒ƆᗡƎℲ⅁HIſ⋊⅂WNOԀΌᴚS⊥∩ΛMX⅄Z⇂ᄅƐㄣގ9ㄥ860"
+var chars       = " -_abcdefghijklmnopqrstuvwxyz1234567890"
+var flipped     = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂ᄅƐㄣގ9ㄥ860"
 
 main(process.argv, process.pid)
 
