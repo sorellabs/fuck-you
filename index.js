@@ -50,7 +50,7 @@ function flip(name) {
 // :: String, [String] -> Future(Error, { output: String, error: String })
 function shell(command, args) {
   return new Future(function(reject, resolve) {
-                      exec( command + ' ' + args.map(λ.compose(String)(sanitise)).join(' ')
+                      exec( command + ' ' + args.map(λ.compose(sanitise)(String)).join(' ')
                           , function(error, stdout, stderr) {
                               if (error == null)  resolve({ output: stdout, error: stderr })
                               else                reject(error) })})}
