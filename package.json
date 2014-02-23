@@ -3,7 +3,9 @@
   "version": "1.0.2",
   "description": " (╯°□°）╯︵sǝssǝɔoɹd oʎ llɐ llıʞǝɓɐɹ",
   "main": "index.js",
-  "bin": { "fuck": "index.js" },
+  "bin": {
+    "fuck": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,5 +22,10 @@
   "bugs": {
     "url": "https://github.com/robotlolita/fuck-you/issues"
   },
-  "homepage": "https://github.com/robotlolita/fuck-you"
+  "homepage": "https://github.com/robotlolita/fuck-you",
+  "dependencies": {
+    "core.lambda": "~0.2.1",
+    "control.monads": "~0.3.1",
+    "data.future": "~2.0.0"
+  }
 }
