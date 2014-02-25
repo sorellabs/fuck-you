@@ -12,6 +12,10 @@ A rage-y way of killing yo processes.
 ## Usage
 
     fuck you [process name]
+    
+## Acknowledgements
+
+    The tweet that started it all: https://twitter.com/louroboros/status/412913768998268928
 
 - - -
 MIT licensed.
