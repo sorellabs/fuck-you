@@ -11,7 +11,9 @@ A rage-y way of killing yo processes.
 
 ## Usage
 
-    fuck you [process name]
+    fuck [you] process_name
+
+Kills process_name. The `you` is optional.
 
 - - -
 MIT licensed.
