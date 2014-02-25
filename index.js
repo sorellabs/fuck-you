@@ -3,6 +3,7 @@
 var exec     = require('child_process').exec
 var λ        = require('core.lambda')
 var Future   = require('data.future')
+var Maybe    = require('data.maybe')
 var sequence = require('control.monads').sequence
 var sanitise = JSON.stringify
 var toArray  = [].slice.call.bind([].slice)
@@ -15,11 +16,11 @@ main(process.argv, process.pid)
 
 // :: [String], Number -> () *Eff*
 function main(args, pid) {
-  if (args.length < 4) {
-    show('Usage: fuck you [process]')
+  if (args.length <3) {
+    show('Usage: fuck [you] PROCESS_NAME')
     process.exit(1) }
 
-  var processName = args[3]
+  var processName = last(args).get()
   var processes   = shell('pgrep', [processName])
   var toKill      = processes.map(function(data) {
                                     return parseIds(data.output).filter(notEqual(pid))
@@ -71,3 +72,9 @@ function notEqual(x){ return function(y) {
 // :: Number -> Future(Error, { output: String, error: String })
 function kill(pid) {
   return shell('kill', ['-9', pid]) }
+
+
+// :: [a] -> Maybe(a)
+function last(args) {
+  return args.length > 0?  Maybe.Just(args[args.length - 1])
+  :      /* otherwise */   Maybe.Nothing() }
