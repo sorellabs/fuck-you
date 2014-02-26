@@ -27,6 +27,6 @@
     "core.lambda": "~0.2.1",
     "control.monads": "~0.3.1",
     "data.future": "~2.0.0",
-    "data.maybe": "^1.0.0"
+    "data.maybe": "~1.0.0"
   }
 }
