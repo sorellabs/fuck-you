@@ -9,7 +9,7 @@ var sanitise = JSON.stringify
 var toArray  = [].slice.call.bind([].slice)
 
 var chars       = " -_abcdefghijklmnopqrstuvwxyz1234567890"
-var flipped     = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂ᄅƐㄣϛ9ㄥ860"
+var flipped     = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860"
 
 main(process.argv, process.pid)
 
