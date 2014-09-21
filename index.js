@@ -21,7 +21,7 @@ function main(args, pid) {
     process.exit(1) }
 
   var processName = last(args).get()
-  var processes   = shell('pgrep', [processName])
+  var processes   = shell('pgrep -i', [processName])
   var toKill      = processes.map(function(data) {
                                     return parseIds(data.output).filter(notEqual(pid))
                                                                 .map(kill) })
