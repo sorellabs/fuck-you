@@ -10,6 +10,8 @@ A rage-y way of killing yo processes.
 
     npm install -g fuck-you
 
+> Requires `node` to be available in your PATH. If you're using a system where
+> the node binary is named `nodejs` instead, you'll need to symlink it or something.
 
 ## Usage
 
