@@ -5,11 +5,9 @@ var λ        = require('core.lambda')
 var Future   = require('data.future')
 var Maybe    = require('data.maybe')
 var sequence = require('control.monads').sequence
+var flip     = require('flip-text')
 var sanitise = JSON.stringify
 var toArray  = [].slice.call.bind([].slice)
-
-var chars       = " -_abcdefghijklmnopqrstuvwxyz1234567890"
-var flipped     = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860"
 
 main(process.argv, process.pid)
 
@@ -34,18 +32,6 @@ function main(args, pid) {
 // :: String... -> () *Eff*
 function show() {
   console.log('\n ' + toArray(arguments).join('') + '\n') }
-
-
-// :: String -> String
-function flip(name) {
-  return name.toLowerCase()
-             .split('')
-             .reverse()
-             .join('')
-             .replace(/./g, function(a) {
-                              var i = chars.indexOf(a)
-                              return i != -1?  flipped[i]
-                              :      /* _ */   '' })}
 
 
 // :: String, [String] -> Future(Error, { output: String, error: String })
