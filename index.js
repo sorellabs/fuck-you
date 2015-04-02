@@ -7,6 +7,7 @@ var Maybe    = require('data.maybe')
 var sequence = require('control.monads').sequence
 var sanitise = JSON.stringify
 var toArray  = [].slice.call.bind([].slice)
+var os = require('os');
 
 var chars       = " -_abcdefghijklmnopqrstuvwxyz1234567890"
 var flipped     = " -_ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860"
@@ -21,10 +22,19 @@ function main(args, pid) {
     process.exit(1) }
 
   var processName = last(args).get()
-  var processes   = shell('pgrep', [processName])
+  var processes;
+  var killFunction;
+
+  if(os.platform().indexOf('win') !== -1){
+    processes = shell('for /f "tokens=2 delims=," %F in (\'tasklist /nh /fi "imagename eq ' + (processName.indexOf('.') === -1 ? processName + '.exe' : processName) + '" /fo csv\') do @echo %~F', []);
+    killFunction = killWindows}
+  else{
+    processes = shell('pgrep', [processName])
+    killFunction = kill}
+
   var toKill      = processes.map(function(data) {
                                     return parseIds(data.output).filter(notEqual(pid))
-                                                                .map(kill) })
+                                                                .map(killFunction) })
 
   toKill.chain(sequence(Future))
         .fork( function(e)  { show('(；￣Д￣) . o O( It’s not very effective... )') }
@@ -72,6 +82,11 @@ function notEqual(x){ return function(y) {
 // :: Number -> Future(Error, { output: String, error: String })
 function kill(pid) {
   return shell('kill', ['-9', pid]) }
+
+
+// :: Number -> Future(Error, { output: String, error: String })
+function killWindows(pid) {
+  return shell('taskkill /F /PID', [pid]) }
 
 
 // :: [a] -> Maybe(a)
