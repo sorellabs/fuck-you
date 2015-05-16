@@ -78,7 +78,7 @@ function match(pid, pattern){ return function(process) {
 
 // :: String -> RegExp
 function toRegExp(pattern) {
-  return new RegExp('^' + escape(pattern) + '$');
+  return new RegExp('^' + escape(pattern) + '$', 'i');
 
   function escape(x) {
     return x.replace(/(\W)/g, function(_, match) {
