@@ -1,6 +1,6 @@
 {
   "name": "fuck-you",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": " (╯°□°）╯︵sǝssǝɔoɹd oʎ llɐ llıʞǝɓɐɹ",
   "main": "index.js",
   "bin": {
@@ -24,9 +24,9 @@
   },
   "homepage": "https://github.com/robotlolita/fuck-you",
   "dependencies": {
-    "core.lambda": "~0.2.1",
-    "control.monads": "~0.3.1",
-    "data.future": ">=2.0.0 <3.0.0",
-    "data.maybe": ">=1.0.0 <2.0.0"
+    "control.monads": "^0.6.0",
+    "data.maybe": "^1.2.0",
+    "data.task": "^3.0.0",
+    "xps": "^1.0.0"
   }
 }
