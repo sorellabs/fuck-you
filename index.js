@@ -7,12 +7,10 @@ var sequence = require('control.monads').sequence;
 var sanitise = JSON.stringify;
 var toArray  = [].slice.call.bind([].slice);
 
-var chars       = " -_.abcdefghijklmnopqrstuvwxyz1234567890";
-var flipped     = " -_'ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860";
-
+var chars    = " -_.abcdefghijklmnopqrstuvwxyz1234567890";
+var flipped  = " -_'ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860";
 
 main(process.argv, process.pid);
-
 
 // :: [String], Number -> () *Eff*
 function main(args, pid) {
@@ -44,7 +42,6 @@ function main(args, pid) {
     }
   );
 }
-
 
 // :: [String] -> () *Eff*
 function show(xs) {
@@ -87,7 +84,9 @@ function collectUnique(processes) {
   return processes.reduce(doCollect, []);
 
   function doCollect(processes, process) {
-    return findIndex(processes, function(a){ return a.name === process.name }).cata({
+    return findIndex(processes, function(a) {
+      return a.name === process.name;
+    }).cata({
       Nothing: function() {
         return processes.concat([{ name: process.name, pids: [process.pid] }]);
       },
@@ -110,12 +109,12 @@ function findIndex(xs, predicate) {
   return Maybe.Nothing();
 }
 
-
 // :: Number, String -> { name: String, pid: Number } -> Boolean
-function match(pid, pattern){ return function(process) {
-  return toRegExp(pattern).test(process.name)
-  &&     process.pid !== pid;
-}}
+function match(pid, pattern){
+  return function(process) {
+    return toRegExp(pattern).test(process.name) && process.pid !== pid;
+  };
+}
 
 // :: String -> RegExp
 function toRegExp(pattern) {
