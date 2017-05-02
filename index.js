@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-var ps       = require('xps');
-var Task     = require('data.task');
-var Maybe    = require('data.maybe');
-var sequence = require('control.monads').sequence;
-var sanitise = JSON.stringify;
-var toArray  = [].slice.call.bind([].slice);
+const ps       = require('xps');
+const Task     = require('data.task');
+const Maybe    = require('data.maybe');
+const sequence = require('control.monads').sequence;
+const sanitise = JSON.stringify;
+const toArray  = [].slice.call.bind([].slice);
 
-var chars       = " -_.abcdefghijklmnopqrstuvwxyz1234567890";
-var flipped     = " -_'ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860";
+const chars       = " -_.abcdefghijklmnopqrstuvwxyz1234567890";
+const flipped     = " -_'ɐqɔpǝɟɓɥıɾʞlɯuodbɹsʇnʌʍxʎz⇂zƐㄣϛ9ㄥ860";
 
 
 main(process.argv, process.pid);
@@ -21,12 +21,10 @@ function main(args, pid) {
     process.exit(1);
   }
 
-  var pattern   = last(args).get();
-  var processes = ps.list();
-  var killed    = processes.map(function(data) {
-                    return data.filter(match(pid, pattern))
-                               .map(kill);
-                  });
+  const pattern   = last(args).get();
+  const processes = ps.list();
+  const killed    = processes.map(data => data.filter(match(pid, pattern))
+             .map(kill));
 
   killed.chain(sequence(Task)).map(collectUnique).fork(
     function onError(e) {
@@ -36,7 +34,7 @@ function main(args, pid) {
     function onSuccess(xs) {
       console.log('');
       if (xs.length > 0)
-        xs.forEach(function(process){
+        xs.forEach(process => {
           rage(flip(process.name), '(x', process.pids.length, ': ', process.pids.join(', '), ')');
         });
       else
@@ -48,7 +46,7 @@ function main(args, pid) {
 
 // :: [String] -> () *Eff*
 function show(xs) {
-  console.log(xs.join('') + '\n');
+  console.log(`${xs.join('')}\n`);
 }
 
 // :: String... -> () *Eff*
@@ -67,8 +65,8 @@ function flip(name) {
              .split('')
              .reverse()
              .join('')
-             .replace(/./g, function(a) {
-                              var i = chars.indexOf(a);
+             .replace(/./g, a => {
+                              const i = chars.indexOf(a);
                               return i != -1?  flipped[i]
                               :      /* _ */   '';
                             });
@@ -77,9 +75,7 @@ function flip(name) {
 // :: { name: String, pid: Number } -> { name: String, pid: Number }
 function kill(process) {
   return ps.kill(process.pid)
-           .map(function() {
-             return process;
-           });
+           .map(() => process);
 }
 
 // :: [{ name: String, pid: Number }] -> [{ name: String, pids: [Number] }]
@@ -87,12 +83,12 @@ function collectUnique(processes) {
   return processes.reduce(doCollect, []);
 
   function doCollect(processes, process) {
-    return findIndex(processes, function(a){ return a.name === process.name }).cata({
-      Nothing: function() {
+    return findIndex(processes, a => a.name === process.name).cata({
+      Nothing() {
         return processes.concat([{ name: process.name, pids: [process.pid] }]);
       },
-      Just: function(index) {
-        var item = processes[index];
+      Just(index) {
+        const item = processes[index];
 
         return processes.slice(0, index)
                         .concat([{ name: process.name, pids: item.pids.concat([process.pid]) }])
@@ -104,7 +100,7 @@ function collectUnique(processes) {
 
 // :: ['a], ('a -> Boolean) -> Maybe(Number)
 function findIndex(xs, predicate) {
-  for (var i = 0; i < xs.length; ++i) {
+  for (let i = 0; i < xs.length; ++i) {
     if (predicate(xs[i]))  return Maybe.Just(i);
   }
   return Maybe.Nothing();
@@ -112,20 +108,16 @@ function findIndex(xs, predicate) {
 
 
 // :: Number, String -> { name: String, pid: Number } -> Boolean
-function match(pid, pattern){ return function(process) {
-  return toRegExp(pattern).test(process.name)
-  &&     process.pid !== pid;
-}}
+function match(pid, pattern){ return process => toRegExp(pattern).test(process.name)
+&&     process.pid !== pid}
 
 // :: String -> RegExp
 function toRegExp(pattern) {
-  return new RegExp('^' + escape(pattern) + '$', 'i');
+  return new RegExp(`^${escape(pattern)}$`, 'i');
 
   function escape(x) {
-    return x.replace(/(\W)/g, function(_, match) {
-      return match === '*'?   '.*'
-      :      /* otherwise */  '\\' + match;
-    });
+    return x.replace(/(\W)/g, (_, match) => match === '*'?   '.*'
+    :      `\\${match}`);
   }
 }
 
